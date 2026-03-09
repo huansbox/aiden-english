@@ -7,10 +7,9 @@ Scans reading_plus/audio/*.mp3, generates docs/ static site:
   - docs/cover.jpg      (resized from reading_plus/94.jpg)
 """
 
-import os
 import shutil
 import xml.etree.ElementTree as ET
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 # ── Config ──────────────────────────────────────────────────────────
@@ -23,8 +22,9 @@ PODCAST_LANGUAGE = "en-us"
 PODCAST_CATEGORY = "Education"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
-AUDIO_SRC = PROJECT_ROOT / "reading_plus" / "audio"
-COVER_SRC = PROJECT_ROOT / "reading_plus" / "94.jpg"
+READING_PLUS = PROJECT_ROOT / "reading_plus"
+AUDIO_SRC = READING_PLUS / "audio"
+COVER_SRC = READING_PLUS / "94.jpg"
 DOCS_DIR = PROJECT_ROOT / "docs"
 AUDIO_DST = DOCS_DIR / "audio"
 
@@ -36,13 +36,24 @@ BITRATE_BPS = 48000
 
 # ── Helpers ─────────────────────────────────────────────────────────
 
+def read_title_from_md(episode_num: int, stem: str) -> str:
+    """Read real title from the corresponding .md file's first heading."""
+    md_path = READING_PLUS / f"{stem}.md"
+    if md_path.exists():
+        first_line = md_path.read_text(encoding="utf-8").split("\n", 1)[0]
+        if first_line.startswith("# "):
+            return first_line[2:].strip()
+    # Fallback: derive from filename
+    parts = stem.split("_", 1)
+    raw_title = parts[1] if len(parts) > 1 else f"Episode {episode_num}"
+    return raw_title.replace("_", " ").title()
+
+
 def parse_episode(mp3_path: Path) -> dict:
     """Parse episode metadata from filename like '94_the_skunks_present.mp3'."""
     stem = mp3_path.stem  # e.g. '94_the_skunks_present'
-    parts = stem.split("_", 1)
-    episode_num = int(parts[0])
-    raw_title = parts[1] if len(parts) > 1 else f"episode-{episode_num}"
-    title = raw_title.replace("_", " ").title()
+    episode_num = int(stem.split("_", 1)[0])
+    title = read_title_from_md(episode_num, stem)
 
     file_size = mp3_path.stat().st_size
     duration_secs = int(file_size / (BITRATE_BPS / 8))
@@ -78,8 +89,14 @@ def build_feed(episodes: list[dict]) -> str:
     cat.set("text", PODCAST_CATEGORY)
     ET.SubElement(channel, f"{{{ITUNES_NS}}}explicit").text = "false"
 
-    # Sort episodes by number
-    for ep in sorted(episodes, key=lambda e: e["number"], reverse=True):
+    # Sort episodes by number (newest first in feed)
+    sorted_eps = sorted(episodes, key=lambda e: e["number"])
+    # Assign pubDate: earliest episode gets base_date, each subsequent +1 day
+    base_date = datetime(2026, 3, 9, 8, 0, 0, tzinfo=timezone.utc)
+    for i, ep in enumerate(sorted_eps):
+        ep["pub_date"] = base_date + timedelta(days=i)
+
+    for ep in reversed(sorted_eps):
         item = ET.SubElement(channel, "item")
         ET.SubElement(item, "title").text = ep["title"]
 
@@ -89,7 +106,7 @@ def build_feed(episodes: list[dict]) -> str:
         enclosure.set("type", "audio/mpeg")
 
         ET.SubElement(item, "guid").text = f"episode-{ep['number']}"
-        ET.SubElement(item, "pubDate").text = datetime.now(timezone.utc).strftime(
+        ET.SubElement(item, "pubDate").text = ep["pub_date"].strftime(
             "%a, %d %b %Y %H:%M:%S +0000"
         )
         ET.SubElement(item, f"{{{ITUNES_NS}}}duration").text = ep["duration"]
