@@ -37,16 +37,17 @@ BITRATE_BPS = 48000
 # ── Helpers ─────────────────────────────────────────────────────────
 
 def read_title_from_md(episode_num: int, stem: str) -> str:
-    """Read real title from the corresponding .md file's first heading."""
+    """Read real title from the corresponding .md file's first heading, prefixed with page number."""
     md_path = READING_PLUS / f"{stem}.md"
     if md_path.exists():
         first_line = md_path.read_text(encoding="utf-8").split("\n", 1)[0]
         if first_line.startswith("# "):
-            return first_line[2:].strip()
+            title = first_line[2:].strip()
+            return f"{episode_num}. {title}"
     # Fallback: derive from filename
     parts = stem.split("_", 1)
     raw_title = parts[1] if len(parts) > 1 else f"Episode {episode_num}"
-    return raw_title.replace("_", " ").title()
+    return f"{episode_num}. {raw_title.replace('_', ' ').title()}"
 
 
 def parse_episode(mp3_path: Path) -> dict:

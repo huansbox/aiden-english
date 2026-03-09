@@ -10,7 +10,7 @@
     <itunes:category text="Education" />
     <itunes:explicit>false</itunes:explicit>
     <item>
-      <title>Breakfast with Barnie</title>
+      <title>102. Breakfast with Barnie</title>
       <enclosure url="https://huansbox.github.io/aiden-english/audio/102_breakfast_with_barnie.mp3" length="534816" type="audio/mpeg" />
       <guid>episode-102</guid>
       <pubDate>Fri, 13 Mar 2026 08:00:00 +0000</pubDate>
@@ -18,7 +18,7 @@
       <itunes:episode>102</itunes:episode>
     </item>
     <item>
-      <title>The String House</title>
+      <title>100. The String House</title>
       <enclosure url="https://huansbox.github.io/aiden-english/audio/100_the_string_house.mp3" length="475344" type="audio/mpeg" />
       <guid>episode-100</guid>
       <pubDate>Thu, 12 Mar 2026 08:00:00 +0000</pubDate>
@@ -26,7 +26,7 @@
       <itunes:episode>100</itunes:episode>
     </item>
     <item>
-      <title>A Narrow Escape</title>
+      <title>98. A Narrow Escape</title>
       <enclosure url="https://huansbox.github.io/aiden-english/audio/98_a_narrow_escape.mp3" length="457056" type="audio/mpeg" />
       <guid>episode-98</guid>
       <pubDate>Wed, 11 Mar 2026 08:00:00 +0000</pubDate>
@@ -34,7 +34,7 @@
       <itunes:episode>98</itunes:episode>
     </item>
     <item>
-      <title>Make Way for Betsy</title>
+      <title>96. Make Way for Betsy</title>
       <enclosure url="https://huansbox.github.io/aiden-english/audio/96_make_way_for_betsy.mp3" length="416448" type="audio/mpeg" />
       <guid>episode-96</guid>
       <pubDate>Tue, 10 Mar 2026 08:00:00 +0000</pubDate>
@@ -42,7 +42,7 @@
       <itunes:episode>96</itunes:episode>
     </item>
     <item>
-      <title>The Skunks' Present</title>
+      <title>94. The Skunks' Present</title>
       <enclosure url="https://huansbox.github.io/aiden-english/audio/94_the_skunks_present.mp3" length="445536" type="audio/mpeg" />
       <guid>episode-94</guid>
       <pubDate>Mon, 09 Mar 2026 08:00:00 +0000</pubDate>
