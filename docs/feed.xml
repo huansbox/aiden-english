@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" version="2.0">
+  <channel>
+    <title>Aiden English Reading</title>
+    <link>https://huansbox.github.io/aiden-english/</link>
+    <description>兒童英文閱讀聽力練習</description>
+    <language>en-us</language>
+    <itunes:author>Aiden's Dad</itunes:author>
+    <itunes:image href="https://huansbox.github.io/aiden-english/cover.jpg" />
+    <itunes:category text="Education" />
+    <itunes:explicit>false</itunes:explicit>
+    <item>
+      <title>Breakfast With Barnie</title>
+      <enclosure url="https://huansbox.github.io/aiden-english/audio/102_breakfast_with_barnie.mp3" length="534816" type="audio/mpeg" />
+      <guid>episode-102</guid>
+      <pubDate>Mon, 09 Mar 2026 14:15:58 +0000</pubDate>
+      <itunes:duration>1:29</itunes:duration>
+      <itunes:episode>102</itunes:episode>
+    </item>
+    <item>
+      <title>The String House</title>
+      <enclosure url="https://huansbox.github.io/aiden-english/audio/100_the_string_house.mp3" length="475344" type="audio/mpeg" />
+      <guid>episode-100</guid>
+      <pubDate>Mon, 09 Mar 2026 14:15:58 +0000</pubDate>
+      <itunes:duration>1:19</itunes:duration>
+      <itunes:episode>100</itunes:episode>
+    </item>
+    <item>
+      <title>A Narrow Escape</title>
+      <enclosure url="https://huansbox.github.io/aiden-english/audio/98_a_narrow_escape.mp3" length="457056" type="audio/mpeg" />
+      <guid>episode-98</guid>
+      <pubDate>Mon, 09 Mar 2026 14:15:58 +0000</pubDate>
+      <itunes:duration>1:16</itunes:duration>
+      <itunes:episode>98</itunes:episode>
+    </item>
+    <item>
+      <title>Make Way For Betsy</title>
+      <enclosure url="https://huansbox.github.io/aiden-english/audio/96_make_way_for_betsy.mp3" length="416448" type="audio/mpeg" />
+      <guid>episode-96</guid>
+      <pubDate>Mon, 09 Mar 2026 14:15:58 +0000</pubDate>
+      <itunes:duration>1:09</itunes:duration>
+      <itunes:episode>96</itunes:episode>
+    </item>
+    <item>
+      <title>The Skunks Present</title>
+      <enclosure url="https://huansbox.github.io/aiden-english/audio/94_the_skunks_present.mp3" length="445536" type="audio/mpeg" />
+      <guid>episode-94</guid>
+      <pubDate>Mon, 09 Mar 2026 14:15:58 +0000</pubDate>
+      <itunes:duration>1:14</itunes:duration>
+      <itunes:episode>94</itunes:episode>
+    </item>
+  </channel>
+</rss>

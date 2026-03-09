@@ -63,7 +63,6 @@ def build_feed(episodes: list[dict]) -> str:
     ET.register_namespace("itunes", ITUNES_NS)
 
     rss = ET.Element("rss", version="2.0")
-    rss.set("xmlns:itunes", ITUNES_NS)
 
     channel = ET.SubElement(rss, "channel")
 

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aiden English Reading</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { font-size: 1.4rem; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: 0.5rem; border-bottom: 1px solid #eee; }
+    audio { width: 200px; height: 32px; }
+    .subscribe { margin: 1rem 0; padding: 0.7rem 1.2rem; background: #7c3aed; color: white;
+                  border: none; border-radius: 6px; font-size: 0.9rem; cursor: pointer; }
+    .subscribe:hover { background: #6d28d9; }
+    .feed-url { font-size: 0.85rem; color: #666; word-break: break-all; }
+  </style>
+</head>
+<body>
+  <h1>Aiden English Reading</h1>
+  <p>兒童英文閱讀聽力練習</p>
+  <p>
+    <button class="subscribe" onclick="navigator.clipboard.writeText('https://huansbox.github.io/aiden-english/feed.xml').then(()=>alert('RSS URL copied!'))">
+      Copy RSS URL
+    </button>
+  </p>
+  <p class="feed-url">https://huansbox.github.io/aiden-english/feed.xml</p>
+  <table>
+    <thead><tr><th>#</th><th>Title</th><th>Duration</th><th>Play</th></tr></thead>
+    <tbody>
+      <tr><td>94</td><td>The Skunks Present</td><td>1:14</td><td><audio controls preload="none"><source src="audio/94_the_skunks_present.mp3" type="audio/mpeg"></audio></td></tr>
+      <tr><td>96</td><td>Make Way For Betsy</td><td>1:09</td><td><audio controls preload="none"><source src="audio/96_make_way_for_betsy.mp3" type="audio/mpeg"></audio></td></tr>
+      <tr><td>98</td><td>A Narrow Escape</td><td>1:16</td><td><audio controls preload="none"><source src="audio/98_a_narrow_escape.mp3" type="audio/mpeg"></audio></td></tr>
+      <tr><td>100</td><td>The String House</td><td>1:19</td><td><audio controls preload="none"><source src="audio/100_the_string_house.mp3" type="audio/mpeg"></audio></td></tr>
+      <tr><td>102</td><td>Breakfast With Barnie</td><td>1:29</td><td><audio controls preload="none"><source src="audio/102_breakfast_with_barnie.mp3" type="audio/mpeg"></audio></td></tr>
+    </tbody>
+  </table>
+</body>
+</html>
