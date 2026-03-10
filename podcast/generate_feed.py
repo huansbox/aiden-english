@@ -3,7 +3,7 @@
 Scans multiple audio sources, generates docs/ static site:
   - docs/feed.xml       (Apple Podcast compatible RSS with itunes:season)
   - docs/audio/*.mp3    (copied from all sources)
-  - docs/cover.jpg      (resized from reading_plus/94.jpg)
+  - docs/cover.jpg      (copied from reading_plus/scans/94.jpg)
 
 Season 1: Reading Plus (textbook stories)
 Season 2: News & Articles (AI-rewritten news)
@@ -26,7 +26,7 @@ PODCAST_CATEGORY = "Education"
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 READING_PLUS = PROJECT_ROOT / "reading_plus"
 ARTICLES_DIR = PROJECT_ROOT / "articles"
-COVER_SRC = READING_PLUS / "94.jpg"
+COVER_SRC = READING_PLUS / "scans" / "94.jpg"
 DOCS_DIR = PROJECT_ROOT / "docs"
 AUDIO_DST = DOCS_DIR / "audio"
 
