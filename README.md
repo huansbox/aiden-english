@@ -57,12 +57,22 @@ https://huansbox.github.io/aiden-english/feed.xml
 - **Pocket Casts**：搜尋 → Submit RSS URL → 貼上
 - **網頁播放**：直接開啟 https://huansbox.github.io/aiden-english/
 
+## 互動練習
+
+每篇故事對應一頁互動練習題，在平板瀏覽器直接作答：
+
+- 練習首頁：https://huansbox.github.io/aiden-english/exercises/
+- 橫式全螢幕、一次一題、全按鈕操作
+- 答錯可重試一次，第二次才顯示正確答案
+
+新增練習頁請參考 `docs/plans/exercise-v2-sop.md`。
+
 ## 目前集數
 
-| # | 標題 |
-|---|------|
-| 94 | The Skunks' Present |
-| 96 | Make Way for Betsy |
-| 98 | A Narrow Escape |
-| 100 | The String House |
-| 102 | Breakfast with Barnie |
+| # | 故事 | 練習 |
+|---|------|------|
+| 94/95 | The Skunks' Present | v2 |
+| 96/97 | Make Way for Betsy | coming soon |
+| 98/99 | A Narrow Escape | coming soon |
+| 100/101 | The String House | coming soon |
+| 102/103 | Breakfast with Barnie | coming soon |
