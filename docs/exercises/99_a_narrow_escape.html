@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: A Narrow Escape</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>A Narrow Escape</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 13</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "A Narrow Escape",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Grassy field (Par. 1)",
+        "options": ["meadow", "path", "bush", "patch", "ground"],
+        "answer": "meadow"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Very close to (Par. 2)",
+        "options": ["against", "ahead", "behind", "between", "under"],
+        "answer": "against"
+      },
+      {
+        "type": "radio",
+        "section": "Knowing the Words",
+        "prompt": "The kite sailed above the trees. What does 'sailed' mean here?",
+        "options": ["Moved on water", "Flew high"],
+        "answer": "Flew high"
+      },
+      {
+        "type": "radio",
+        "section": "Knowing the Words",
+        "prompt": "Joe is putting a patch on his coat. What does 'patch' mean here?",
+        "options": ["A place where carrots grow", "A small piece of cloth"],
+        "answer": "A small piece of cloth"
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "Which word stands for 'was not'?",
+        "options": ["wasn't", "couldn't", "wouldn't"],
+        "answer": "wasn't"
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "Which word stands for 'could not'?",
+        "options": ["wasn't", "couldn't", "wouldn't"],
+        "answer": "couldn't"
+      },
+      {
+        "type": "synonym",
+        "section": "Reading and Thinking",
+        "prompt": "Check two sentences that tell how Uncle Bunny and the foxes were the same:",
+        "options": [
+          "They were all clever.",
+          "They were all afraid.",
+          "They were all good runners."
+        ],
+        "answer": ["They were all afraid.", "They were all good runners."],
+        "pick": 2
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "What did Uncle Bunny throw away before he ran?",
+        "options": [
+          "His hat",
+          "His cane",
+          "His coat"
+        ],
+        "answer": "His cane"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Where was Tricky chasing Uncle Bunny?",
+        "options": [
+          "To the meadow",
+          "To Slick's hiding place",
+          "To the stream"
+        ],
+        "answer": "To Slick's hiding place"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "When Uncle Bunny saw Tricky behind him, he may have felt ___.",
+        "options": ["frightened", "happy", "hungry"],
+        "answer": "frightened"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The fox ___ over the fence.",
+        "options": ["sang", "jumped", "sat"],
+        "answer": "jumped"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The wind blew the ___ off the trees.",
+        "options": ["mountain", "leaves", "sun"],
+        "answer": "leaves"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The runner was so ___ she seemed to fly.",
+        "options": ["slow", "new", "fast"],
+        "answer": "fast"
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>
