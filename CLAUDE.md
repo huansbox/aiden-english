@@ -23,10 +23,10 @@
 **輸入**：使用者提供英文文章 URL 或文本
 
 **處理流程**：
-1. 擷取原文 → `reading_plus/news/{topic}_原文.md`
-2. AI 簡化改寫為多篇（遵循簡化標準）→ `reading_plus/news/{topic}_part*.md`
+1. 擷取原文 → `articles/{topic}_原文.md`
+2. AI 簡化改寫為多篇（遵循簡化標準）→ `articles/{topic}_part*.md`
 3. 三角度審核（閱讀難度 / 敘事趣味 / 教學價值）→ 修正
-4. edge-tts 生成音檔 → `reading_plus/news/audio/*.mp3`
+4. edge-tts 生成音檔 → `articles/audio/*.mp3`
 5. 建立可列印 HTML → `docs/articles/*.html`
 6. 設計練習題 → `docs/exercises/{topic}_part*.html`
 
@@ -54,36 +54,29 @@
 ## 目錄結構
 
 ```
-reading_plus/                   素材與音檔（不部署）
-├── *.jpg                       課本掃描圖
-├── {頁碼}_{title}.md           課本故事 OCR 文字
-├── audio/*.mp3                 課本故事 TTS 音檔
-├── generate_audio.py           課本音檔生成腳本
-└── news/                       文章素材（非 Reading Plus，歷史命名）
-    ├── {topic}_*.md            原文 + 簡化分篇
-    ├── audio/*.mp3             文章 TTS 音檔
-    └── generate_audio.py       文章音檔生成腳本
+reading_plus/                   Pipeline 1 素材（課本）
+├── scans/                      課本掃描圖（.jpg）
+├── {頁碼}_{title}.md           故事 OCR 文字
+└── audio/                      TTS 音檔
 
+articles/                       Pipeline 2 素材（改寫文章）
+├── {topic}_*.md                原文 + 簡化分篇
+└── audio/                      TTS 音檔
+
+generate_audio.py               通用 TTS 腳本（CLI 參數選來源）
 podcast/
-└── generate_feed.py            RSS feed 生成器（自動掃描兩個來源）
+└── generate_feed.py            RSS feed 生成器
+
+plans/                          設計文檔（不部署）
+├── exercise-v2-sop.md
+└── *.md
 
 docs/                           GitHub Pages 部署目錄
-├── index.html                  首頁（Exercises / Articles / Podcast 入口）
-├── feed.xml                    Podcast RSS（Season 1 + 2，itunes:season 標籤）
-├── cover.jpg                   Podcast 封面
-├── audio/*.mp3                 所有 MP3（Podcast 統一路徑）
-├── articles/                   可列印文章（純列印，無音檔無練習連結）
-│   ├── index.html              文章列表
-│   └── {topic}.html            列印頁（大字體、段落編號、新詞粗體、Print 按鈕）
-├── exercises/                  互動練習題（統一入口）
-│   ├── index.html              首頁（分 Reading Plus / News 兩區）
-│   ├── quiz-engine.js          共用引擎（6 題型 + 兩次重試邏輯）
-│   ├── style-v2.css            共用樣式（橫式卡片佈局）
-│   ├── {頁碼}_*.html           Reading Plus 練習
-│   └── {topic}_part*.html      文章練習
-└── plans/                      設計文檔
-    ├── exercise-v2-sop.md      練習題建立 SOP（題型規格 + 轉換原則）
-    └── *.md                    各次開發的設計與實作 plan
+├── index.html
+├── feed.xml
+├── audio/                      所有 MP3（由 generate_feed.py 複製）
+├── articles/                   可列印文章 HTML
+└── exercises/                  互動練習題
 ```
 
 ## 技術決策
@@ -101,10 +94,10 @@ docs/                           GitHub Pages 部署目錄
 ```bash
 # 1. OCR 圖片為 md（Claude 視覺）
 # 2. 生成音檔
-cd reading_plus && python generate_audio.py
+python generate_audio.py reading_plus
 # 3. 更新 feed
 python podcast/generate_feed.py
-# 4. 建立練習頁（參考 docs/plans/exercise-v2-sop.md）
+# 4. 建立練習頁（參考 plans/exercise-v2-sop.md）
 # 5. 更新 docs/exercises/index.html
 ```
 
@@ -113,7 +106,7 @@ python podcast/generate_feed.py
 ```bash
 # 1. 擷取原文、簡化改寫、審核（Claude 對話中完成）
 # 2. 生成音檔
-cd reading_plus/news && python generate_audio.py
+python generate_audio.py articles
 # 3. 更新 feed
 python podcast/generate_feed.py
 # 4. 建立列印 HTML（docs/articles/）

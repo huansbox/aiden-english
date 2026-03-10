@@ -12,11 +12,11 @@
 
 ### 1. 準備題目資料
 
-從原始 plan 檔 `docs/plans/2026-03-10-exercise-v2-plan.md` 取得該頁的題目資料（Task 3-7 對應 p.97/99/101/103）。
+從原始 plan 檔 `plans/2026-03-10-exercise-v2-plan.md` 取得該頁的題目資料（Task 3-7 對應 p.97/99/101/103）。
 
 如果 plan 中缺少某頁，需要：
 1. 讀取對應的 `reading_plus/{頁碼}_*.md` 故事文本
-2. 參考課本練習圖片 `reading_plus/{頁碼}.jpg`
+2. 參考課本練習圖片 `reading_plus/scans/{頁碼}.jpg`
 3. 依照下方題型規格建立 JSON 資料
 
 ### 2. 建立 HTML 檔案

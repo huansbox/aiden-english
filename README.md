@@ -32,10 +32,10 @@ RSS URL：`https://huansbox.github.io/aiden-english/feed.xml`
 
 ```bash
 # Reading Plus 音檔
-cd reading_plus && python generate_audio.py
+python generate_audio.py reading_plus
 
-# 新聞文章音檔
-cd reading_plus/news && python generate_audio.py
+# 文章音檔
+python generate_audio.py articles
 
 # 產生 Podcast feed（掃描所有來源）
 python podcast/generate_feed.py
