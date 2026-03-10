@@ -153,6 +153,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const slot = document.createElement("span");
       slot.className = "wb-slot";
       slot.dataset.slotIndex = si;
+      if (s.suffix) slot.dataset.suffix = s.suffix;
       slot.addEventListener("click", () => {
         if (checked[idx]) return;
         const word = answers[idx][si];
@@ -172,7 +173,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function renderSlots() {
       sentencesDiv.querySelectorAll(".wb-slot").forEach((slot, si) => {
-        slot.textContent = answers[idx][si] || "";
+        const word = answers[idx][si] || "";
+        const suffix = slot.dataset.suffix || "";
+        slot.textContent = word ? word + suffix : "";
       });
     }
   }
@@ -412,7 +415,7 @@ document.addEventListener("DOMContentLoaded", () => {
       q.sentences.forEach((s, si) => {
         const isRight = norm(answers[idx]?.[si] || "") === norm(s.answer);
         slots[si].classList.add(isRight ? "correct" : "wrong");
-        if (!isRight) slots[si].textContent = s.answer;
+        if (!isRight) slots[si].textContent = s.answer + (s.suffix || "");
       });
       card.querySelectorAll(".wb-word").forEach(b => b.style.pointerEvents = "none");
       card.querySelectorAll(".wb-slot").forEach(s => s.style.pointerEvents = "none");
