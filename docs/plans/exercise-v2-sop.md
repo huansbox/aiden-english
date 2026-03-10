@@ -54,7 +54,7 @@
 - options 包含 4-5 個選項，全部來自同篇故事的單字
 - 單選
 
-#### synonym — 同義詞多選
+#### synonym — 同義詞/反義詞/分類多選
 ```json
 {
   "type": "synonym",
@@ -65,8 +65,9 @@
   "pick": 2
 }
 ```
-- 固定選 2 個
-- answer 是陣列
+- `pick` 決定要選幾個（2 或 3）
+- answer 是陣列，長度須等於 pick
+- 也用於反義詞（prompt 改 "Pick the two antonyms:"）和分類題（prompt 改 "Pick the three words that belong together:", pick: 3）
 
 #### wordbank — 填空題組
 ```json
@@ -121,22 +122,46 @@
 }
 ```
 
-### 5. 題目設計原則
+### 5. 題型轉換原則
+
+原始課本題型 → v2 按鈕題型的對應規則：
+
+| 原始題型 | 轉換為 | 說明 |
+|---------|--------|------|
+| 詞義填寫（input 寫單字） | `vocab` | 給 4-5 個單字按鈕選，干擾詞來自同篇故事 |
+| 同義詞選 2 | `synonym` pick:2 | 維持原樣 |
+| 反義詞選 2 | `synonym` pick:2 | prompt 改為 "Pick the two antonyms:" |
+| 分類選 3（belong together） | `synonym` pick:3 | prompt 改為 "Pick the three words that belong together:" |
+| ABC order | `wordbank` | 用故事原文造句 + 干擾詞，取代排列字母順序 |
+| 選詞填空 | `select` | 維持原樣 |
+| 主旨選擇 / 單選 | `radio` | 維持原樣 |
+| 排序 | `order` | 維持原樣 |
+| True/False | `radio` | 選項為 "True" / "False" |
+| S/O 同反義判斷 | `radio` | 每對一題，選項為 "Synonyms (same meaning)" / "Opposites" |
+| 一詞多義 | `radio` | prompt 包含句子，選項是不同釋義 |
+| 所有格填空 | `select` | 給 2-3 個名字選項 |
+| 縮寫還原（wasn't 等） | `select` | 給 3 個縮寫選項 |
+| 代名詞指代（He stands for...） | `select` | 選項給故事中的角色/事物名 |
+| 簡答題（有明確答案） | `radio` | 正確答案 + 2 個故事中出現但不正確的細節作為干擾 |
+| 簡答題（完全開放） | 刪除 | 無標準答案的題不適合按鈕式練習 |
+| Rhyming words 等語音學練習 | 刪除 | 與閱讀理解無關，且不在故事文本中 |
+
+### 6. 題目設計原則
 
 - **干擾詞全部來自同篇故事**，不用無關單字
 - **Word Bank 取代 ABC order**：用故事原文造句，加 2 個干擾詞
-- **簡答題轉選擇題**：如果原本是 open-ended，改為 select 或 radio
-- **True/False 改為 radio**：選項為 True / False
+- **選擇題干擾項**：使用故事中出現但不正確的細節，讓小孩必須回想劇情才能答對
 - 題目順序依課本 section 排列
+- **刪除原則**：只刪除完全開放的簡答題和與閱讀理解無關的語音學練習
 
-### 6. 更新 index.html
+### 7. 更新 index.html
 
 將 `coming soon` 改為連結：
 ```html
 <li><a href="{頁碼}_story_title.html"><strong>{頁碼}.</strong> Story Title</a></li>
 ```
 
-### 7. 測試清單
+### 8. 測試清單
 
 - [ ] 所有題目可正確作答
 - [ ] 第一次答錯：錯誤選項變灰，可重試
