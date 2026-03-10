@@ -1,90 +1,125 @@
 # Aiden English Reading
 
-9 歲小孩英文閱讀聽力練習。兩種內容來源：Reading Plus 課本故事 + AI 改寫新聞文章。
+9 歲小孩英文閱讀聽力練習平台。GitHub Pages 託管，包含 Podcast + 可列印文章 + 互動練習題。
 
-## 學習流程
+## 兩條內容 Pipeline
 
-1. **讀文章**：列印紙本閱讀（Reading Plus 用課本，新聞用 `docs/articles/` 列印頁）
-2. **聽音檔**：Podcast App 收聽（Season 1 = Reading Plus, Season 2 = News & Articles）
-3. **做練習**：Pad 橫式瀏覽器做互動練習題（`docs/exercises/` 統一入口）
+### Pipeline 1：Reading Plus（課本故事）
+
+**輸入**：使用者提供課本掃描圖（偶數頁=故事，奇數頁=練習題）
+
+**處理流程**：
+1. Claude 視覺 OCR 圖片 → `reading_plus/{頁碼}_{title}.md`
+2. edge-tts 生成音檔 → `reading_plus/audio/*.mp3`
+3. 根據練習題圖片設計 JSON 題目（參考 SOP 轉換原則）→ `docs/exercises/{頁碼}_*.html`
+
+**產出**：
+- 聽：Podcast Season 1（課本音檔）
+- 讀：課本紙本（使用者已有）
+- 練：互動練習題（Pad 瀏覽器）
+
+### Pipeline 2：Articles（改寫文章）
+
+**輸入**：使用者提供英文文章 URL 或文本
+
+**處理流程**：
+1. 擷取原文 → `reading_plus/news/{topic}_原文.md`
+2. AI 簡化改寫為多篇（遵循簡化標準）→ `reading_plus/news/{topic}_part*.md`
+3. 三角度審核（閱讀難度 / 敘事趣味 / 教學價值）→ 修正
+4. edge-tts 生成音檔 → `reading_plus/news/audio/*.mp3`
+5. 建立可列印 HTML → `docs/articles/*.html`
+6. 設計練習題 → `docs/exercises/{topic}_part*.html`
+
+**產出**：
+- 聽：Podcast Season 2（文章音檔）
+- 讀：可列印 HTML 頁面（大字體、段落編號、新詞粗體）
+- 練：互動練習題（Pad 瀏覽器）
+
+## 簡化標準（Pipeline 2）
+
+- 每篇 150-200 字，平均句長 8-12 字，最長不超過 18 字
+- 80% 簡單句，過去簡單式為主
+- 新詞彙 5-8 個/篇，in-context 解釋（不另設 glossary）
+- 一篇原文可拆為多篇（各有完整故事弧線）
+- 三角度審核：閱讀難度分析 / 敘事與趣味性 / EFL 教學價值
+
+## 學習流程（使用者端）
+
+| 步驟 | Reading Plus | Articles |
+|------|-------------|----------|
+| 讀 | 課本紙本 | 列印 HTML（[Articles](https://huansbox.github.io/aiden-english/articles/)） |
+| 聽 | Podcast Season 1 | Podcast Season 2 |
+| 練 | [Exercises](https://huansbox.github.io/aiden-english/exercises/) | 同左（統一入口） |
 
 ## 目錄結構
 
 ```
-reading_plus/               Reading Plus 課本素材
-├── *.jpg                   教材掃描圖（偶數頁=故事，奇數頁=練習題）
-├── *_<title>.md            故事文字（OCR 轉錄）
-├── audio/*.mp3             TTS 音檔
-├── generate_audio.py       音檔生成腳本
-└── news/                   新聞文章素材
-    ├── *_original.md       原始新聞
-    ├── *_part*.md          簡化後的分篇文章
-    ├── audio/*.mp3         TTS 音檔
-    └── generate_audio.py   音檔生成腳本
+reading_plus/                   素材與音檔（不部署）
+├── *.jpg                       課本掃描圖
+├── {頁碼}_{title}.md           課本故事 OCR 文字
+├── audio/*.mp3                 課本故事 TTS 音檔
+├── generate_audio.py           課本音檔生成腳本
+└── news/                       文章素材（非 Reading Plus，歷史命名）
+    ├── {topic}_*.md            原文 + 簡化分篇
+    ├── audio/*.mp3             文章 TTS 音檔
+    └── generate_audio.py       文章音檔生成腳本
 
 podcast/
-└── generate_feed.py        RSS feed 生成器（Season 支援）
+└── generate_feed.py            RSS feed 生成器（自動掃描兩個來源）
 
-docs/                       GitHub Pages 根目錄
-├── feed.xml                Podcast RSS feed（Season 1 + 2）
-├── index.html              首頁（Podcast + Exercises + Articles 入口）
-├── cover.jpg               封面圖
-├── audio/*.mp3             所有 MP3（Podcast 統一路徑）
-├── articles/               可列印文章（純閱讀用，無音檔無練習）
-│   ├── index.html          文章列表
-│   └── *.html              各篇文章（大字體、段落編號、新詞粗體、Print 按鈕）
-├── exercises/              互動練習題（統一入口）
-│   ├── index.html          練習首頁（分 Reading Plus / News 兩區）
-│   ├── quiz-engine.js      共用引擎（6 題型 + 兩次重試）
-│   ├── style-v2.css        共用樣式（橫式卡片佈局）
-│   ├── 95_*.html           Reading Plus 練習（題目 JSON 內嵌）
-│   └── wbc_*.html          新聞文章練習
-└── plans/                  設計文檔與 SOP
+docs/                           GitHub Pages 部署目錄
+├── index.html                  首頁（Exercises / Articles / Podcast 入口）
+├── feed.xml                    Podcast RSS（Season 1 + 2，itunes:season 標籤）
+├── cover.jpg                   Podcast 封面
+├── audio/*.mp3                 所有 MP3（Podcast 統一路徑）
+├── articles/                   可列印文章（純列印，無音檔無練習連結）
+│   ├── index.html              文章列表
+│   └── {topic}.html            列印頁（大字體、段落編號、新詞粗體、Print 按鈕）
+├── exercises/                  互動練習題（統一入口）
+│   ├── index.html              首頁（分 Reading Plus / News 兩區）
+│   ├── quiz-engine.js          共用引擎（6 題型 + 兩次重試邏輯）
+│   ├── style-v2.css            共用樣式（橫式卡片佈局）
+│   ├── {頁碼}_*.html           Reading Plus 練習
+│   └── {topic}_part*.html      文章練習
+└── plans/                      設計文檔
+    ├── exercise-v2-sop.md      練習題建立 SOP（題型規格 + 轉換原則）
+    └── *.md                    各次開發的設計與實作 plan
 ```
 
 ## 技術決策
 
-### Podcast
-- **TTS**：edge-tts，語音 `en-US-JennyNeural`（美式女聲）
-- **RSS feed**：Python `xml.etree.ElementTree`，支援 `itunes:season`
-- **Season 1**：Reading Plus 課本故事（episode number = 頁碼）
-- **Season 2**：News & Articles（episode number = 順序編號）
-- **託管**：GitHub Pages（main branch `/docs`），public repo
-- **Base URL**：`https://huansbox.github.io/aiden-english/`
+- **TTS**：edge-tts `en-US-JennyNeural`（美式女聲），免費
+- **Podcast**：RSS feed + `itunes:season`，Apple Podcast 相容
+- **練習引擎**：vanilla JS，JSON-driven，6 題型，兩次重試
+- **託管**：GitHub Pages（public repo），`docs/` 目錄
+- **零依賴前端**：無 build step，無 framework
 
-### 練習題（v2）
-- **架構**：JSON-driven quiz engine，題目內嵌在 `<script type="application/json">`
-- **引擎**：`quiz-engine.js`（vanilla JS，零依賴）
-- **佈局**：橫式優先（iPad 1024×768），一次一題卡片式，全按鈕化
-- **題型**：vocab / synonym / wordbank / radio / order / select（共 6 種）
-- **重試**：第一次錯標記錯誤選項；第二次錯顯示正確答案
-- **SOP**：`docs/plans/exercise-v2-sop.md`
+## 操作指令
 
-### 新聞文章簡化標準
-- 每篇 150-200 字，平均句長 8-12 字，最長不超過 18 字
-- 80% 簡單句，過去簡單式為主，新詞彙 5-8 個/篇
-- 干擾詞 / 選項全部來自文章本身
-- 詳見 `docs/plans/exercise-v2-sop.md` 題型轉換表
+### 新增 Reading Plus
 
-## 新增 Reading Plus 集數
+```bash
+# 1. OCR 圖片為 md（Claude 視覺）
+# 2. 生成音檔
+cd reading_plus && python generate_audio.py
+# 3. 更新 feed
+python podcast/generate_feed.py
+# 4. 建立練習頁（參考 docs/plans/exercise-v2-sop.md）
+# 5. 更新 docs/exercises/index.html
+```
 
-1. 掃描圖放入 `reading_plus/`
-2. OCR 為 `{頁碼}_{title}.md`
-3. 更新 `reading_plus/generate_audio.py` 的 `MD_FILES`
-4. `cd reading_plus && python generate_audio.py`
-5. `python podcast/generate_feed.py`
-6. 建立練習頁（參考 SOP）
-7. 更新 `docs/exercises/index.html`
+### 新增文章
 
-## 新增新聞文章
-
-1. 存原始新聞為 `reading_plus/news/{topic}_original.md`
-2. 簡化改寫為多篇 `{topic}_part*.md`（遵循簡化標準）
-3. `cd reading_plus/news && python generate_audio.py`（更新 MD_FILES）
-4. `python podcast/generate_feed.py`（自動加入 Season 2）
-5. 建立可列印 HTML（`docs/articles/`）
-6. 建立練習頁（`docs/exercises/`）
-7. 更新兩個 index.html
+```bash
+# 1. 擷取原文、簡化改寫、審核（Claude 對話中完成）
+# 2. 生成音檔
+cd reading_plus/news && python generate_audio.py
+# 3. 更新 feed
+python podcast/generate_feed.py
+# 4. 建立列印 HTML（docs/articles/）
+# 5. 建立練習頁（docs/exercises/）
+# 6. 更新 docs/articles/index.html 和 docs/exercises/index.html
+```
 
 ## 依賴
 
