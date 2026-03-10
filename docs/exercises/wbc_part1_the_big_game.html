@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: The Big Game</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>The Big Game</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 9</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "The Big Game",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A big competition where countries play against each other (Par. 2)",
+        "options": ["tournament", "stadium", "dugout", "inning", "team"],
+        "answer": "tournament"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A large building where people watch sports (Par. 3)",
+        "options": ["stadium", "dugout", "tournament", "base", "wall"],
+        "answer": "stadium"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "Where players sit and wait during a baseball game (Par. 3)",
+        "options": ["dugout", "stadium", "base", "plate", "wall"],
+        "answer": "dugout"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "One part of a baseball game (Par. 4)",
+        "options": ["inning", "tournament", "home run", "dugout", "score"],
+        "answer": "inning"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A hit that sends the ball over the wall and scores a run (Par. 4)",
+        "options": ["home run", "inning", "double", "bunt", "pitch"],
+        "answer": "home run"
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the two synonyms:",
+        "options": ["nervous", "excited", "worried", "happy"],
+        "answer": ["nervous", "worried"],
+        "pick": 2
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Why were the fans nervous?",
+        "options": [
+          "The stadium was too crowded.",
+          "Chinese Taipei had lost their first games.",
+          "The band played too loud."
+        ],
+        "answer": "Chinese Taipei had lost their first games."
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "What happened in the first inning?",
+        "options": [
+          "Korea scored a home run.",
+          "The game was tied.",
+          "Yu Chang hit a home run."
+        ],
+        "answer": "Yu Chang hit a home run."
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The crowd ___ to their feet and screamed.",
+        "options": ["jumped", "walked", "sat"],
+        "answer": "jumped"
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>

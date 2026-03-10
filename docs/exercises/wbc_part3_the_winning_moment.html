@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: The Winning Moment</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>The Winning Moment</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 10</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "The Winning Moment",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A soft, short hit where the ball rolls on the ground (Par. 3)",
+        "options": ["bunt", "double", "home run", "pitch", "swing"],
+        "answer": "bunt"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "The base a runner must touch to score a run (Par. 3)",
+        "options": ["home plate", "first base", "third base", "dugout", "mound"],
+        "answer": "home plate"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "The player who catches the ball behind the batter (Par. 4)",
+        "options": ["catcher", "pitcher", "umpire", "runner", "batter"],
+        "answer": "catcher"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "Touched a runner with the ball to make an out (Par. 4)",
+        "options": ["tagged", "threw", "grabbed", "caught", "scored"],
+        "answer": "tagged"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "The person who decides if a play is safe or out (Par. 4)",
+        "options": ["umpire", "catcher", "pitcher", "manager", "captain"],
+        "answer": "umpire"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Why did Chen miss two games?",
+        "options": [
+          "He was tired.",
+          "A pitch hit him.",
+          "He was in a different tournament."
+        ],
+        "answer": "A pitch hit him."
+      },
+      {
+        "type": "order",
+        "section": "Reading and Thinking",
+        "prompt": "Tap the events in the order they happened:",
+        "items": [
+          "The umpire checked the replay.",
+          "Chiang laid down a bunt.",
+          "Chen touched home plate.",
+          "Wu threw the ball home."
+        ],
+        "correctOrder": [
+          "Chiang laid down a bunt.",
+          "Chen touched home plate.",
+          "Wu threw the ball home.",
+          "The umpire checked the replay."
+        ]
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "How did Chinese Taipei score the winning run?",
+        "options": [
+          "Fairchild hit a home run.",
+          "Chiang bunted and Chen scored from third base.",
+          "Kim made an error."
+        ],
+        "answer": "Chiang bunted and Chen scored from third base."
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "Chen ran from third base as ___ as he could.",
+        "options": ["fast", "slow", "far"],
+        "answer": "fast"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "What did Chen say at the end?",
+        "options": [
+          "\"We played as one.\"",
+          "\"The Tokyo Dome became our home.\"",
+          "\"We can do this!\""
+        ],
+        "answer": "\"The Tokyo Dome became our home.\""
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>

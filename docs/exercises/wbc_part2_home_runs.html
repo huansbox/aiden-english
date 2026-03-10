@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: Home Runs Back and Forth</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>Home Runs Back and Forth</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 10</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "Home Runs Back and Forth",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "The player who throws the ball to the batter (Par. 1)",
+        "options": ["pitcher", "catcher", "runner", "batter", "umpire"],
+        "answer": "pitcher"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A home run with no other runners on base (Par. 2)",
+        "options": ["solo", "double", "bunt", "grand slam", "pitch"],
+        "answer": "solo"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "A hit where the batter reaches second base (Par. 5)",
+        "options": ["double", "solo", "home run", "bunt", "single"],
+        "answer": "double"
+      },
+      {
+        "type": "vocab",
+        "section": "Baseball Words",
+        "prompt": "When the game is tied after nine innings, teams keep playing (Par. 6)",
+        "options": ["extra innings", "home run", "tournament", "double", "final inning"],
+        "answer": "extra innings"
+      },
+      {
+        "type": "select",
+        "section": "Knowing the Words",
+        "prompt": "The ball ___ over the wall.",
+        "options": ["sailed", "walked", "rolled"],
+        "answer": "sailed"
+      },
+      {
+        "type": "select",
+        "section": "Knowing the Words",
+        "prompt": "Korea took the ___, 3-2.",
+        "options": ["lead", "team", "turn"],
+        "answer": "lead"
+      },
+      {
+        "type": "order",
+        "section": "Reading and Thinking",
+        "prompt": "Tap the events in the order they happened:",
+        "items": [
+          "Kim hit a two-run home run.",
+          "Cheng hit a solo home run.",
+          "Fairchild hit a two-run shot.",
+          "Kim hit a double to tie the game."
+        ],
+        "correctOrder": [
+          "Cheng hit a solo home run.",
+          "Kim hit a two-run home run.",
+          "Fairchild hit a two-run shot.",
+          "Kim hit a double to tie the game."
+        ]
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "What was the score after nine innings?",
+        "options": ["3-2", "4-3", "4-4"],
+        "answer": "4-4"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Why did some fans cover their eyes?",
+        "options": [
+          "The sun was too bright.",
+          "Kim hit a home run and Korea took the lead.",
+          "The game went to extra innings."
+        ],
+        "answer": "Kim hit a home run and Korea took the lead."
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "He stepped up and ___ a two-run home run.",
+        "options": ["crushed", "rolled", "tapped"],
+        "answer": "crushed"
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>
