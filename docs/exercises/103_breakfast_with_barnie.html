@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: Breakfast with Barnie</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>Breakfast with Barnie</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 12</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "Breakfast with Barnie",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Lights in the sky (Par. 1)",
+        "options": ["stars", "branch", "stream", "paw", "rock"],
+        "answer": "stars"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Closed and opened eyes quickly (Par. 1)",
+        "options": ["blinked", "wiggling", "shouted", "climbed", "leaned"],
+        "answer": "blinked"
+      },
+      {
+        "type": "radio",
+        "section": "Knowing the Words",
+        "prompt": "little / small",
+        "options": ["Synonyms (same meaning)", "Opposites"],
+        "answer": "Synonyms (same meaning)"
+      },
+      {
+        "type": "radio",
+        "section": "Knowing the Words",
+        "prompt": "easy / hard",
+        "options": ["Synonyms (same meaning)", "Opposites"],
+        "answer": "Opposites"
+      },
+      {
+        "type": "radio",
+        "section": "Knowing the Words",
+        "prompt": "wash / clean",
+        "options": ["Synonyms (same meaning)", "Opposites"],
+        "answer": "Synonyms (same meaning)"
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["raccoon", "carrot", "rabbit", "fish"],
+        "answer": ["raccoon", "rabbit", "fish"],
+        "pick": 3
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["water", "paws", "eyes", "head"],
+        "answer": ["paws", "eyes", "head"],
+        "pick": 3
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["branch", "tree", "star", "leaves"],
+        "answer": ["branch", "tree", "leaves"],
+        "pick": 3
+      },
+      {
+        "type": "order",
+        "section": "Reading and Thinking",
+        "prompt": "Tap the sentences in the order they happened:",
+        "items": [
+          "Barnie caught a fish.",
+          "Uncle Bunny followed Barnie.",
+          "Two 'stars' blinked.",
+          "Uncle Bunny lost his fish."
+        ],
+        "correctOrder": [
+          "Two 'stars' blinked.",
+          "Uncle Bunny followed Barnie.",
+          "Barnie caught a fish.",
+          "Uncle Bunny lost his fish."
+        ]
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "How are Barnie and Uncle Bunny different?",
+        "options": [
+          "They both like to eat breakfast.",
+          "Barnie likes fish, but Uncle Bunny likes carrots.",
+          "Barnie can swim, but Uncle Bunny cannot."
+        ],
+        "answer": "Barnie likes fish, but Uncle Bunny likes carrots."
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The boat was ___ on the lake.",
+        "options": ["wiggling", "sailing", "swimming"],
+        "answer": "sailing"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "I ___ quietly past the room.",
+        "options": ["walked", "rolled", "blinked"],
+        "answer": "walked"
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>
