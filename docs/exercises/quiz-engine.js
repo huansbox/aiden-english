@@ -12,7 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let current = 0;
   let answers = new Array(questions.length).fill(null); // user answers
-  let checked = new Array(questions.length).fill(false); // already checked?
+  let checked = new Array(questions.length).fill(false); // fully resolved?
+  let attempts = new Array(questions.length).fill(0); // attempt count per question
   let score = 0;
 
   // ── Build cards ──────────────────────
@@ -217,19 +218,33 @@ document.addEventListener("DOMContentLoaded", () => {
     if (current >= questions.length) return;
 
     if (!checked[current]) {
-      // Check answer first
-      const isCorrect = checkAnswer(current);
-      checked[current] = true;
-      if (isCorrect) score++;
-      showFeedback(isCorrect, () => {
-        if (current < questions.length - 1) {
-          showCard(current + 1);
-        } else {
-          showSummary();
-        }
-      });
+      attempts[current]++;
+      const isFirstAttempt = attempts[current] === 1;
+      const isCorrect = isFirstAttempt
+        ? checkAnswerFirstAttempt(current)
+        : checkAnswerFinal(current);
+
+      if (isCorrect) {
+        // Correct (1st or 2nd attempt) → score + advance
+        checked[current] = true;
+        score++;
+        const msg = isFirstAttempt ? "Correct!" : "Got it!";
+        showFeedback(true, msg, () => advance());
+      } else if (isFirstAttempt) {
+        // First attempt wrong → "Try again!", stay on this card
+        showFeedback(false, "Try again!", () => {});
+      } else {
+        // Second attempt wrong → show correct answer + advance
+        checked[current] = true;
+        showAnswers(current);
+        showFeedback(false, "Not quite...", () => advance());
+      }
     } else {
-      // Already checked, just navigate
+      // Already resolved, just navigate
+      advance();
+    }
+
+    function advance() {
       if (current < questions.length - 1) {
         showCard(current + 1);
       } else {
@@ -238,19 +253,24 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ── Check answer logic ─────────────────
-  function checkAnswer(idx) {
+  // ── Check: first attempt (disable wrong choices, keep card interactive) ──
+  function checkAnswerFirstAttempt(idx) {
     const q = questions[idx];
     const card = cardArea.querySelector(`.card[data-index="${idx}"]`);
     const userAns = answers[idx];
 
     if (q.type === "vocab" || q.type === "radio" || q.type === "select") {
       const correct = norm(q.answer) === norm(userAns || "");
-      card.querySelectorAll(".opt-btn").forEach(btn => {
-        if (norm(btn.textContent) === norm(q.answer)) btn.classList.add("correct");
-        else if (btn.classList.contains("selected")) btn.classList.add("wrong");
-        btn.style.pointerEvents = "none";
-      });
+      if (!correct) {
+        // Disable only the wrong selected button
+        card.querySelectorAll(".opt-btn").forEach(btn => {
+          if (btn.classList.contains("selected")) {
+            btn.classList.remove("selected");
+            btn.classList.add("wrong", "disabled");
+          }
+        });
+        answers[idx] = null; // reset selection for retry
+      }
       return correct;
     }
 
@@ -258,13 +278,87 @@ document.addEventListener("DOMContentLoaded", () => {
       const answerSet = new Set(q.answer.map(norm));
       const userSet = new Set([...(userAns || [])].map(norm));
       const correct = answerSet.size === userSet.size && [...answerSet].every(a => userSet.has(a));
-      card.querySelectorAll(".opt-btn").forEach(btn => {
-        const v = norm(btn.textContent);
-        if (answerSet.has(v) && userSet.has(v)) btn.classList.add("correct");
-        else if (answerSet.has(v) && !userSet.has(v)) btn.classList.add("missed");
-        else if (!answerSet.has(v) && userSet.has(v)) btn.classList.add("wrong");
-        btn.style.pointerEvents = "none";
+      if (!correct) {
+        // Disable wrong selections, keep correct ones selected
+        card.querySelectorAll(".opt-btn").forEach(btn => {
+          const v = norm(btn.textContent);
+          if (!answerSet.has(v) && userSet.has(v)) {
+            btn.classList.remove("selected");
+            btn.classList.add("wrong", "disabled");
+          }
+        });
+        // Reset answer set to only keep correct picks
+        const kept = new Set();
+        answers[idx].forEach(a => { if (answerSet.has(norm(a))) kept.add(a); });
+        answers[idx] = kept;
+      }
+      return correct;
+    }
+
+    if (q.type === "wordbank") {
+      const slots = card.querySelectorAll(".wb-slot");
+      const bank = card.querySelector(".word-bank");
+      let allCorrect = true;
+      q.sentences.forEach((s, si) => {
+        const isRight = norm(userAns?.[si] || "") === norm(s.answer);
+        if (isRight) {
+          slots[si].classList.add("correct");
+          slots[si].style.pointerEvents = "none"; // lock correct slots
+        } else {
+          allCorrect = false;
+          // Return wrong word to bank
+          const wrongWord = userAns?.[si];
+          if (wrongWord) {
+            bank.querySelectorAll(".wb-word").forEach(b => {
+              if (b.textContent === wrongWord) b.classList.remove("used");
+            });
+            answers[idx][si] = null;
+            slots[si].textContent = "";
+          }
+          slots[si].classList.add("wrong");
+          setTimeout(() => slots[si].classList.remove("wrong"), 800);
+        }
       });
+      return allCorrect;
+    }
+
+    if (q.type === "order") {
+      const isCorrect = q.correctOrder.length === (userAns || []).length &&
+        q.correctOrder.every((item, i) => norm(item) === norm(userAns[i]));
+      if (!isCorrect) {
+        // Reset: move all items back to pool
+        const pool = card.querySelector(".order-pool");
+        const sorted = card.querySelector(".order-sorted");
+        [...sorted.querySelectorAll(".order-item")].forEach(el => {
+          el.classList.add("wrong");
+          setTimeout(() => el.classList.remove("wrong"), 800);
+          pool.appendChild(el);
+        });
+        answers[idx] = [];
+      }
+      return isCorrect;
+    }
+
+    return false;
+  }
+
+  // ── Check: final attempt (lock everything, show correct answers) ──
+  function checkAnswerFinal(idx) {
+    const q = questions[idx];
+    const card = cardArea.querySelector(`.card[data-index="${idx}"]`);
+    const userAns = answers[idx];
+
+    if (q.type === "vocab" || q.type === "radio" || q.type === "select") {
+      const correct = norm(q.answer) === norm(userAns || "");
+      showAnswers(idx);
+      return correct;
+    }
+
+    if (q.type === "synonym") {
+      const answerSet = new Set(q.answer.map(norm));
+      const userSet = new Set([...(userAns || [])].map(norm));
+      const correct = answerSet.size === userSet.size && [...answerSet].every(a => userSet.has(a));
+      showAnswers(idx);
       return correct;
     }
 
@@ -272,21 +366,59 @@ document.addEventListener("DOMContentLoaded", () => {
       const slots = card.querySelectorAll(".wb-slot");
       let allCorrect = true;
       q.sentences.forEach((s, si) => {
-        const correct = norm(userAns?.[si] || "") === norm(s.answer);
-        slots[si].classList.add(correct ? "correct" : "wrong");
-        if (!correct) {
-          allCorrect = false;
-          slots[si].textContent = s.answer; // Show correct answer
-        }
+        const isRight = norm(userAns?.[si] || "") === norm(s.answer);
+        if (!isRight) allCorrect = false;
       });
-      card.querySelectorAll(".wb-word").forEach(b => b.style.pointerEvents = "none");
-      card.querySelectorAll(".wb-slot").forEach(s => s.style.pointerEvents = "none");
+      showAnswers(idx);
       return allCorrect;
     }
 
     if (q.type === "order") {
       const correct = q.correctOrder.length === (userAns || []).length &&
         q.correctOrder.every((item, i) => norm(item) === norm(userAns[i]));
+      showAnswers(idx);
+      return correct;
+    }
+
+    return false;
+  }
+
+  // ── Show correct answers and lock card ──
+  function showAnswers(idx) {
+    const q = questions[idx];
+    const card = cardArea.querySelector(`.card[data-index="${idx}"]`);
+
+    if (q.type === "vocab" || q.type === "radio" || q.type === "select") {
+      card.querySelectorAll(".opt-btn").forEach(btn => {
+        if (norm(btn.textContent) === norm(q.answer)) btn.classList.add("correct");
+        else if (btn.classList.contains("selected")) btn.classList.add("wrong");
+        btn.style.pointerEvents = "none";
+      });
+    }
+
+    if (q.type === "synonym") {
+      const answerSet = new Set(q.answer.map(norm));
+      const userSet = new Set([...(answers[idx] || [])].map(norm));
+      card.querySelectorAll(".opt-btn").forEach(btn => {
+        const v = norm(btn.textContent);
+        if (answerSet.has(v)) btn.classList.add("correct");
+        else if (userSet.has(v)) btn.classList.add("wrong");
+        btn.style.pointerEvents = "none";
+      });
+    }
+
+    if (q.type === "wordbank") {
+      const slots = card.querySelectorAll(".wb-slot");
+      q.sentences.forEach((s, si) => {
+        const isRight = norm(answers[idx]?.[si] || "") === norm(s.answer);
+        slots[si].classList.add(isRight ? "correct" : "wrong");
+        if (!isRight) slots[si].textContent = s.answer;
+      });
+      card.querySelectorAll(".wb-word").forEach(b => b.style.pointerEvents = "none");
+      card.querySelectorAll(".wb-slot").forEach(s => s.style.pointerEvents = "none");
+    }
+
+    if (q.type === "order") {
       const sortedEl = card.querySelector(".order-sorted");
       sortedEl.querySelectorAll(".order-item").forEach((el, i) => {
         if (norm(el.textContent) === norm(q.correctOrder[i])) el.classList.add("correct");
@@ -296,18 +428,15 @@ document.addEventListener("DOMContentLoaded", () => {
       card.querySelector(".order-pool").querySelectorAll(".order-item").forEach(el => {
         el.style.pointerEvents = "none";
       });
-      return correct;
     }
-
-    return false;
   }
 
   function norm(s) { return (s || "").trim().toLowerCase(); }
 
   // ── Feedback flash ─────────────────────
-  function showFeedback(isCorrect, callback) {
+  function showFeedback(isCorrect, message, callback) {
     feedbackInner.className = "feedback-inner " + (isCorrect ? "is-correct" : "is-wrong");
-    feedbackInner.textContent = isCorrect ? "Correct!" : "Not quite...";
+    feedbackInner.textContent = message;
     feedbackEl.classList.add("show");
     setTimeout(() => {
       feedbackEl.classList.remove("show");
