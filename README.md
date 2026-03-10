@@ -1,6 +1,6 @@
 # Aiden English Reading
 
-兒童英文閱讀聽力練習。兩種內容：Reading Plus 課本故事 + AI 改寫新聞文章。
+兒童英文閱讀聽力練習。兩種內容：Reading Plus 課本故事 + AI 改寫新聞文章。支援 iPad「加入主畫面」全螢幕使用。
 
 ## 環境設置
 
@@ -14,7 +14,7 @@ pip install -r requirements.txt
 
 1. **讀文章**：課本或列印文章（[Articles](https://huansbox.github.io/aiden-english/articles/)）
 2. **聽音檔**：Podcast App 訂閱收聽
-3. **做練習**：平板瀏覽器做互動練習題（[Exercises](https://huansbox.github.io/aiden-english/exercises/)）
+3. **做練習**：平板瀏覽器做互動練習題（[Exercises](https://huansbox.github.io/aiden-english/exercises/)），完成後顯示最佳分數
 
 ## Podcast
 

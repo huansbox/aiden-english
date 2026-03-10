@@ -74,16 +74,19 @@ plans/                          設計文檔與 SOP（不部署）
 docs/                           GitHub Pages 部署目錄
 ├── index.html
 ├── feed.xml
+├── apple-touch-icon.png        PWA 主畫面圖示（180×180）
+├── pwa.js                      Standalone 模式內部連結攔截
 ├── audio/                      所有 MP3（由 generate_feed.py 複製）
 ├── articles/                   可列印文章 HTML
-└── exercises/                  互動練習題
+└── exercises/                  互動練習題（含分數記錄）
 ```
 
 ## 技術決策
 
 - **TTS**：edge-tts `en-US-JennyNeural`（美式女聲），免費
 - **Podcast**：RSS feed + `itunes:season`，Apple Podcast 相容
-- **練習引擎**：vanilla JS，JSON-driven，6 題型，兩次重試
+- **練習引擎**：vanilla JS，JSON-driven，6 題型，兩次重試，localStorage 存最佳分數
+- **PWA**：apple-mobile-web-app-capable，iPad 主畫面全螢幕，pwa.js 攔截內部連結
 - **託管**：GitHub Pages（public repo），`docs/` 目錄
 - **零依賴前端**：無 build step，無 framework
 
