@@ -1,10 +1,12 @@
-"""Podcast RSS feed generator.
+"""Podcast RSS feed generator with Season support.
 
-Scans reading_plus/audio/*.mp3, generates docs/ static site:
-  - docs/feed.xml       (Apple Podcast compatible RSS)
-  - docs/index.html     (simple episode listing)
-  - docs/audio/*.mp3    (copied from reading_plus/audio/)
+Scans multiple audio sources, generates docs/ static site:
+  - docs/feed.xml       (Apple Podcast compatible RSS with itunes:season)
+  - docs/audio/*.mp3    (copied from all sources)
   - docs/cover.jpg      (resized from reading_plus/94.jpg)
+
+Season 1: Reading Plus (textbook stories)
+Season 2: News & Articles (AI-rewritten news)
 """
 
 import shutil
@@ -23,7 +25,7 @@ PODCAST_CATEGORY = "Education"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 READING_PLUS = PROJECT_ROOT / "reading_plus"
-AUDIO_SRC = READING_PLUS / "audio"
+NEWS_DIR = READING_PLUS / "news"
 COVER_SRC = READING_PLUS / "94.jpg"
 DOCS_DIR = PROJECT_ROOT / "docs"
 AUDIO_DST = DOCS_DIR / "audio"
@@ -34,48 +36,92 @@ ITUNES_NS = "http://www.itunes.com/dtds/podcast-1.0.dtd"
 BITRATE_BPS = 48000
 
 
-# ── Helpers ─────────────────────────────────────────────────────────
+# ── Episode Parsing ────────────────────────────────────────────────
 
-def read_title_from_md(episode_num: int, stem: str) -> str:
-    """Read real title from the corresponding .md file's first heading, prefixed with page number."""
-    md_path = READING_PLUS / f"{stem}.md"
+def read_md_title(md_path: Path) -> str | None:
+    """Read H1 title from a markdown file."""
     if md_path.exists():
         first_line = md_path.read_text(encoding="utf-8").split("\n", 1)[0]
         if first_line.startswith("# "):
-            title = first_line[2:].strip()
-            return f"{episode_num}. {title}"
-    # Fallback: derive from filename
-    parts = stem.split("_", 1)
-    raw_title = parts[1] if len(parts) > 1 else f"Episode {episode_num}"
-    return f"{episode_num}. {raw_title.replace('_', ' ').title()}"
+            return first_line[2:].strip()
+    return None
 
 
-def parse_episode(mp3_path: Path) -> dict:
-    """Parse episode metadata from filename like '94_the_skunks_present.mp3'."""
-    stem = mp3_path.stem  # e.g. '94_the_skunks_present'
-    episode_num = int(stem.split("_", 1)[0])
-    title = read_title_from_md(episode_num, stem)
-
+def estimate_duration(mp3_path: Path) -> str:
+    """Estimate MP3 duration from file size."""
     file_size = mp3_path.stat().st_size
     duration_secs = int(file_size / (BITRATE_BPS / 8))
     minutes, seconds = divmod(duration_secs, 60)
-    duration_str = f"{minutes}:{seconds:02d}"
+    return f"{minutes}:{seconds:02d}"
 
-    return {
-        "number": episode_num,
-        "title": title,
-        "filename": mp3_path.name,
-        "file_size": file_size,
-        "duration": duration_str,
-    }
 
+def parse_reading_plus_episodes() -> list[dict]:
+    """Parse Season 1 episodes from reading_plus/audio/*.mp3."""
+    audio_dir = READING_PLUS / "audio"
+    if not audio_dir.exists():
+        return []
+
+    episodes = []
+    for mp3 in sorted(audio_dir.glob("*.mp3")):
+        stem = mp3.stem  # e.g. '94_the_skunks_present'
+        episode_num = int(stem.split("_", 1)[0])
+
+        md_path = READING_PLUS / f"{stem}.md"
+        md_title = read_md_title(md_path)
+        if md_title:
+            title = f"{episode_num}. {md_title}"
+        else:
+            parts = stem.split("_", 1)
+            raw_title = parts[1] if len(parts) > 1 else f"Episode {episode_num}"
+            title = f"{episode_num}. {raw_title.replace('_', ' ').title()}"
+
+        episodes.append({
+            "season": 1,
+            "number": episode_num,
+            "title": title,
+            "filename": mp3.name,
+            "file_size": mp3.stat().st_size,
+            "duration": estimate_duration(mp3),
+            "src_path": mp3,
+        })
+
+    return episodes
+
+
+def parse_news_episodes() -> list[dict]:
+    """Parse Season 2 episodes from reading_plus/news/audio/*.mp3."""
+    audio_dir = NEWS_DIR / "audio"
+    if not audio_dir.exists():
+        return []
+
+    episodes = []
+    for i, mp3 in enumerate(sorted(audio_dir.glob("*.mp3")), start=1):
+        stem = mp3.stem  # e.g. 'wbc_part1_the_big_game'
+
+        md_path = NEWS_DIR / f"{stem}.md"
+        md_title = read_md_title(md_path)
+        title = md_title if md_title else stem.replace("_", " ").title()
+
+        episodes.append({
+            "season": 2,
+            "number": i,
+            "title": title,
+            "filename": mp3.name,
+            "file_size": mp3.stat().st_size,
+            "duration": estimate_duration(mp3),
+            "src_path": mp3,
+        })
+
+    return episodes
+
+
+# ── Feed Builder ───────────────────────────────────────────────────
 
 def build_feed(episodes: list[dict]) -> str:
-    """Build RSS XML string for the podcast feed."""
+    """Build RSS XML string with itunes:season support."""
     ET.register_namespace("itunes", ITUNES_NS)
 
     rss = ET.Element("rss", version="2.0")
-
     channel = ET.SubElement(rss, "channel")
 
     ET.SubElement(channel, "title").text = PODCAST_TITLE
@@ -89,14 +135,17 @@ def build_feed(episodes: list[dict]) -> str:
     cat = ET.SubElement(channel, f"{{{ITUNES_NS}}}category")
     cat.set("text", PODCAST_CATEGORY)
     ET.SubElement(channel, f"{{{ITUNES_NS}}}explicit").text = "false"
+    ET.SubElement(channel, f"{{{ITUNES_NS}}}type").text = "serial"
 
-    # Sort episodes by number (newest first in feed)
-    sorted_eps = sorted(episodes, key=lambda e: e["number"])
-    # Assign pubDate: earliest episode gets base_date, each subsequent +1 day
+    # Sort: Season 1 first (by number), then Season 2 (by number)
+    sorted_eps = sorted(episodes, key=lambda e: (e["season"], e["number"]))
+
+    # Assign pubDate: all episodes sequentially, +1 day each
     base_date = datetime(2026, 3, 9, 8, 0, 0, tzinfo=timezone.utc)
     for i, ep in enumerate(sorted_eps):
         ep["pub_date"] = base_date + timedelta(days=i)
 
+    # Output newest first
     for ep in reversed(sorted_eps):
         item = ET.SubElement(channel, "item")
         ET.SubElement(item, "title").text = ep["title"]
@@ -106,11 +155,12 @@ def build_feed(episodes: list[dict]) -> str:
         enclosure.set("length", str(ep["file_size"]))
         enclosure.set("type", "audio/mpeg")
 
-        ET.SubElement(item, "guid").text = f"episode-{ep['number']}"
+        ET.SubElement(item, "guid").text = f"s{ep['season']}-e{ep['number']}"
         ET.SubElement(item, "pubDate").text = ep["pub_date"].strftime(
             "%a, %d %b %Y %H:%M:%S +0000"
         )
         ET.SubElement(item, f"{{{ITUNES_NS}}}duration").text = ep["duration"]
+        ET.SubElement(item, f"{{{ITUNES_NS}}}season").text = str(ep["season"])
         ET.SubElement(item, f"{{{ITUNES_NS}}}episode").text = str(ep["number"])
 
     ET.indent(rss, space="  ")
@@ -118,100 +168,46 @@ def build_feed(episodes: list[dict]) -> str:
     return '<?xml version="1.0" encoding="UTF-8"?>\n' + xml_bytes + "\n"
 
 
-def build_index_html(episodes: list[dict]) -> str:
-    """Build a simple HTML page listing all episodes."""
-    rows = ""
-    for ep in sorted(episodes, key=lambda e: e["number"]):
-        rows += (
-            f'      <tr><td>{ep["number"]}</td>'
-            f'<td>{ep["title"]}</td>'
-            f'<td>{ep["duration"]}</td>'
-            f'<td><audio controls preload="none">'
-            f'<source src="audio/{ep["filename"]}" type="audio/mpeg">'
-            f"</audio></td></tr>\n"
-        )
-
-    return f"""<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{PODCAST_TITLE}</title>
-  <style>
-    body {{ font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }}
-    h1 {{ font-size: 1.4rem; }}
-    table {{ width: 100%; border-collapse: collapse; }}
-    th, td {{ text-align: left; padding: 0.5rem; border-bottom: 1px solid #eee; }}
-    audio {{ width: 200px; height: 32px; }}
-    .subscribe {{ margin: 1rem 0; padding: 0.7rem 1.2rem; background: #7c3aed; color: white;
-                  border: none; border-radius: 6px; font-size: 0.9rem; cursor: pointer; }}
-    .subscribe:hover {{ background: #6d28d9; }}
-    .feed-url {{ font-size: 0.85rem; color: #666; word-break: break-all; }}
-  </style>
-</head>
-<body>
-  <h1>{PODCAST_TITLE}</h1>
-  <p>{PODCAST_DESC}</p>
-  <p>
-    <button class="subscribe" onclick="navigator.clipboard.writeText('{BASE_URL}/feed.xml').then(()=>alert('RSS URL copied!'))">
-      Copy RSS URL
-    </button>
-  </p>
-  <p class="feed-url">{BASE_URL}/feed.xml</p>
-  <table>
-    <thead><tr><th>#</th><th>Title</th><th>Duration</th><th>Play</th></tr></thead>
-    <tbody>
-{rows}    </tbody>
-  </table>
-</body>
-</html>
-"""
-
-
 # ── Main ────────────────────────────────────────────────────────────
 
 def main():
-    # Ensure output dirs exist
     DOCS_DIR.mkdir(exist_ok=True)
     AUDIO_DST.mkdir(exist_ok=True)
 
-    # Copy MP3 files (only if newer or missing)
-    mp3_files = sorted(AUDIO_SRC.glob("*.mp3"))
-    if not mp3_files:
-        print("No MP3 files found in", AUDIO_SRC)
+    # Collect episodes from all sources
+    all_episodes = parse_reading_plus_episodes() + parse_news_episodes()
+
+    if not all_episodes:
+        print("No MP3 files found.")
         return
 
-    for mp3 in mp3_files:
-        dst = AUDIO_DST / mp3.name
-        if not dst.exists() or mp3.stat().st_mtime > dst.stat().st_mtime:
-            shutil.copy2(mp3, dst)
-            print(f"  Copied: {mp3.name}")
+    # Copy MP3 files (only if newer or missing)
+    for ep in all_episodes:
+        dst = AUDIO_DST / ep["filename"]
+        src = ep["src_path"]
+        if not dst.exists() or src.stat().st_mtime > dst.stat().st_mtime:
+            shutil.copy2(src, dst)
+            print(f"  Copied: {ep['filename']}")
 
     # Copy cover image
     cover_dst = DOCS_DIR / "cover.jpg"
     if COVER_SRC.exists():
         shutil.copy2(COVER_SRC, cover_dst)
-        print(f"  Cover:  {COVER_SRC.name} -> cover.jpg")
-    else:
-        print(f"  Warning: cover source not found at {COVER_SRC}")
 
-    # Parse episodes
-    episodes = [parse_episode(mp3) for mp3 in mp3_files]
-    print(f"\n  Found {len(episodes)} episodes:")
-    for ep in sorted(episodes, key=lambda e: e["number"]):
-        print(f"    #{ep['number']:>3d}  {ep['title']}  ({ep['duration']})")
+    # Print summary
+    for season_num in sorted(set(ep["season"] for ep in all_episodes)):
+        season_eps = [ep for ep in all_episodes if ep["season"] == season_num]
+        season_name = "Reading Plus" if season_num == 1 else "News & Articles"
+        print(f"\n  Season {season_num}: {season_name} ({len(season_eps)} episodes)")
+        for ep in sorted(season_eps, key=lambda e: e["number"]):
+            print(f"    #{ep['number']:>3d}  {ep['title']}  ({ep['duration']})")
 
-    # Generate feed.xml
-    feed_xml = build_feed(episodes)
+    # Generate feed.xml (does NOT touch index.html — manually maintained)
+    feed_xml = build_feed(all_episodes)
     (DOCS_DIR / "feed.xml").write_text(feed_xml, encoding="utf-8")
     print(f"\n  Generated: docs/feed.xml")
 
-    # Generate index.html
-    index_html = build_index_html(episodes)
-    (DOCS_DIR / "index.html").write_text(index_html, encoding="utf-8")
-    print(f"  Generated: docs/index.html")
-
-    print("\nDone! Static site ready in docs/")
+    print("\nDone!")
 
 
 if __name__ == "__main__":
