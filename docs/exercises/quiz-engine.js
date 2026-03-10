@@ -466,6 +466,14 @@ document.addEventListener("DOMContentLoaded", () => {
     btnNext.disabled = true;
     btnPrev.disabled = true;
     progress.textContent = "Done!";
+
+    // Save score to localStorage
+    var key = "quiz-" + location.pathname.split("/").pop().replace(".html", "");
+    var prev = JSON.parse(localStorage.getItem(key) || "null");
+    // Keep best score
+    if (!prev || score > prev.score) {
+      localStorage.setItem(key, JSON.stringify({ score: score, total: questions.length }));
+    }
   }
 
   function restart() {

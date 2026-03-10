@@ -6,6 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Aiden English">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png">
   <title>Exercises — Aiden English Reading</title>
   <style>
     body { font-family: system-ui, sans-serif; max-width: 640px; margin: 2rem auto; padding: 0 1rem; }
@@ -13,11 +14,14 @@
     .back { font-size: 0.9rem; }
     .list { list-style: none; padding: 0; }
     .list li { margin: 0.5rem 0; }
-    .list a { display: block; padding: 1rem 1.2rem; background: #f9fafb; border: 1px solid #e5e7eb;
+    .list a { display: flex; align-items: center; justify-content: space-between;
+              padding: 1rem 1.2rem; background: #f9fafb; border: 1px solid #e5e7eb;
               border-radius: 8px; text-decoration: none; color: inherit; font-size: 1.1rem; }
     .list a:hover { background: #f3f4f6; }
-    .list .soon { display: block; padding: 1rem 1.2rem; background: #f9fafb; border: 1px solid #e5e7eb;
-                  border-radius: 8px; color: #9ca3af; font-size: 1.1rem; }
+    .score-badge { font-size: 0.9rem; font-weight: 700; padding: 0.2rem 0.6rem;
+                   border-radius: 6px; white-space: nowrap; flex-shrink: 0; margin-left: 0.5rem; }
+    .score-badge.perfect { background: #ecfdf5; color: #059669; }
+    .score-badge.partial { background: #fef3c7; color: #b45309; }
   </style>
 </head>
 <body>
@@ -25,18 +29,29 @@
   <h1>Exercises</h1>
   <h2 style="font-size:1.1rem;margin-top:1.5rem;">Reading Plus</h2>
   <ul class="list">
-    <li><a href="95_the_skunks_present.html"><strong>95.</strong> The Skunks' Present</a></li>
-    <li><a href="97_make_way_for_betsy.html"><strong>97.</strong> Make Way for Betsy</a></li>
-    <li><a href="99_a_narrow_escape.html"><strong>99.</strong> A Narrow Escape</a></li>
-    <li><a href="101_the_string_house.html"><strong>101.</strong> The String House</a></li>
-    <li><a href="103_breakfast_with_barnie.html"><strong>103.</strong> Breakfast with Barnie</a></li>
+    <li><a href="95_the_skunks_present.html"><span><strong>95.</strong> The Skunks' Present</span></a></li>
+    <li><a href="97_make_way_for_betsy.html"><span><strong>97.</strong> Make Way for Betsy</span></a></li>
+    <li><a href="99_a_narrow_escape.html"><span><strong>99.</strong> A Narrow Escape</span></a></li>
+    <li><a href="101_the_string_house.html"><span><strong>101.</strong> The String House</span></a></li>
+    <li><a href="103_breakfast_with_barnie.html"><span><strong>103.</strong> Breakfast with Barnie</span></a></li>
   </ul>
   <h2 style="font-size:1.1rem;margin-top:1.5rem;">News &amp; Articles</h2>
   <ul class="list">
-    <li><a href="wbc_part1_the_big_game.html">WBC: The Big Game (Part 1)</a></li>
-    <li><a href="wbc_part2_home_runs.html">WBC: Home Runs Back and Forth (Part 2)</a></li>
-    <li><a href="wbc_part3_the_winning_moment.html">WBC: The Winning Moment (Part 3)</a></li>
+    <li><a href="wbc_part1_the_big_game.html"><span>WBC: The Big Game (Part 1)</span></a></li>
+    <li><a href="wbc_part2_home_runs.html"><span>WBC: Home Runs Back and Forth (Part 2)</span></a></li>
+    <li><a href="wbc_part3_the_winning_moment.html"><span>WBC: The Winning Moment (Part 3)</span></a></li>
   </ul>
+  <script>
+    document.querySelectorAll(".list a").forEach(function (a) {
+      var key = "quiz-" + a.getAttribute("href").replace(".html", "");
+      var data = JSON.parse(localStorage.getItem(key) || "null");
+      if (!data) return;
+      var badge = document.createElement("span");
+      badge.className = "score-badge " + (data.score === data.total ? "perfect" : "partial");
+      badge.textContent = data.score + "/" + data.total;
+      a.appendChild(badge);
+    });
+  </script>
   <script src="../pwa.js"></script>
 </body>
 </html>
