@@ -72,7 +72,7 @@ https://huansbox.github.io/aiden-english/feed.xml
 | # | 故事 | 練習 |
 |---|------|------|
 | 94/95 | The Skunks' Present | v2 |
-| 96/97 | Make Way for Betsy | coming soon |
-| 98/99 | A Narrow Escape | coming soon |
-| 100/101 | The String House | coming soon |
-| 102/103 | Breakfast with Barnie | coming soon |
+| 96/97 | Make Way for Betsy | v2 |
+| 98/99 | A Narrow Escape | v2 |
+| 100/101 | The String House | v2 |
+| 102/103 | Breakfast with Barnie | v2 |
