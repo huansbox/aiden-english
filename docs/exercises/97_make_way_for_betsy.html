@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: Make Way for Betsy</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <a class="back" href="index.html">&larr; Back</a>
+  <h1>97. Make Way for Betsy &mdash; Exercise</h1>
+
+  <!-- ════ Knowing the Words ════ -->
+  <h2>Knowing the Words</h2>
+
+  <div class="q" data-type="input" data-answer="path">
+    <span class="q-label">1. A place to walk (Par.&nbsp;1)</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">path</div>
+  </div>
+
+  <div class="q" data-type="input" data-answer="sting">
+    <span class="q-label">2. Insect bite (Par.&nbsp;4)</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">sting</div>
+  </div>
+
+  <div class="q" data-type="checkbox" data-answer="inside,outside">
+    <span class="q-label">3. Circle two words with opposite meanings:</span>
+    <div class="options">
+      <label><input type="checkbox" value="inside"> inside</label>
+      <label><input type="checkbox" value="little"> little</label>
+      <label><input type="checkbox" value="claws"> claws</label>
+      <label><input type="checkbox" value="outside"> outside</label>
+    </div>
+    <div class="ref-answer">inside, outside</div>
+  </div>
+
+  <div class="q" data-type="checkbox" data-answer="push,pull">
+    <span class="q-label">4. Circle two words with opposite meanings:</span>
+    <div class="options">
+      <label><input type="checkbox" value="long"> long</label>
+      <label><input type="checkbox" value="push"> push</label>
+      <label><input type="checkbox" value="hungry"> hungry</label>
+      <label><input type="checkbox" value="pull"> pull</label>
+    </div>
+    <div class="ref-answer">push, pull</div>
+  </div>
+
+  <!-- ════ Working with Words ════ -->
+  <h2>Working with Words</h2>
+
+  <div class="q" data-type="input" data-answer="betsy bear's">
+    <span class="q-label">5. ___ burning nose</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">Betsy Bear's</div>
+  </div>
+
+  <div class="q" data-type="input" data-answer="uncle bunny's">
+    <span class="q-label">6. ___ whiskers</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">Uncle Bunny's</div>
+  </div>
+
+  <div class="q" data-type="select" data-answer="bring">
+    <span class="q-label">7. Please ___ your book with you.</span>
+    <select>
+      <option value="">choose…</option>
+      <option value="bring">bring</option>
+      <option value="string">string</option>
+      <option value="spring">spring</option>
+    </select>
+    <div class="ref-answer">bring</div>
+  </div>
+
+  <div class="q" data-type="select" data-answer="clean">
+    <span class="q-label">8. The clothes are ___.</span>
+    <select>
+      <option value="">choose…</option>
+      <option value="clean">clean</option>
+      <option value="cream">cream</option>
+      <option value="string">string</option>
+    </select>
+    <div class="ref-answer">clean</div>
+  </div>
+
+  <!-- ════ Reading and Thinking ════ -->
+  <h2>Reading and Thinking</h2>
+
+  <div class="q" data-type="open">
+    <span class="q-label">9. Where did Betsy's path go?</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">Betsy's path went down to the stream.</div>
+  </div>
+
+  <div class="q" data-type="open">
+    <span class="q-label">10. What did Betsy find inside the tree?</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">She found some honey in the tree.</div>
+  </div>
+
+  <div class="q" data-type="open">
+    <span class="q-label">11. The bees were angry because&hellip;</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">Betsy took their honey.</div>
+  </div>
+
+  <div class="q" data-type="radio" data-answer="T">
+    <span class="q-label">12. Bears and bees eat honey.</span>
+    <div class="options">
+      <label><input type="radio" name="q12" value="T"> True</label>
+      <label><input type="radio" name="q12" value="F"> False</label>
+    </div>
+    <div class="ref-answer">True</div>
+  </div>
+
+  <div class="q" data-type="radio" data-answer="F">
+    <span class="q-label">13. Bears and bees make honey.</span>
+    <div class="options">
+      <label><input type="radio" name="q13" value="T"> True</label>
+      <label><input type="radio" name="q13" value="F"> False</label>
+    </div>
+    <div class="ref-answer">False</div>
+  </div>
+
+  <div class="q" data-type="radio" data-answer="F">
+    <span class="q-label">14. Bees are larger than bears.</span>
+    <div class="options">
+      <label><input type="radio" name="q14" value="T"> True</label>
+      <label><input type="radio" name="q14" value="F"> False</label>
+    </div>
+    <div class="ref-answer">False</div>
+  </div>
+
+  <div class="q" data-type="open">
+    <span class="q-label">15. What do you think Betsy did when she came out of the stream?</span>
+    <input type="text" placeholder="Type your answer">
+    <div class="ref-answer">She probably went to find food.</div>
+  </div>
+
+  <!-- ════ Buttons ════ -->
+  <div id="score"></div>
+  <div class="btn-bar">
+    <button id="check-btn">Check Answers</button>
+    <button id="reset-btn">Try Again</button>
+  </div>
+
+  <script src="check.js"></script>
+</body>
+</html>
