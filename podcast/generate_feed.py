@@ -25,7 +25,7 @@ PODCAST_CATEGORY = "Education"
 
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 READING_PLUS = PROJECT_ROOT / "reading_plus"
-NEWS_DIR = READING_PLUS / "news"
+ARTICLES_DIR = PROJECT_ROOT / "articles"
 COVER_SRC = READING_PLUS / "94.jpg"
 DOCS_DIR = PROJECT_ROOT / "docs"
 AUDIO_DST = DOCS_DIR / "audio"
@@ -89,8 +89,8 @@ def parse_reading_plus_episodes() -> list[dict]:
 
 
 def parse_news_episodes() -> list[dict]:
-    """Parse Season 2 episodes from reading_plus/news/audio/*.mp3."""
-    audio_dir = NEWS_DIR / "audio"
+    """Parse Season 2 episodes from articles/audio/*.mp3."""
+    audio_dir = ARTICLES_DIR / "audio"
     if not audio_dir.exists():
         return []
 
@@ -98,7 +98,7 @@ def parse_news_episodes() -> list[dict]:
     for i, mp3 in enumerate(sorted(audio_dir.glob("*.mp3")), start=1):
         stem = mp3.stem  # e.g. 'wbc_part1_the_big_game'
 
-        md_path = NEWS_DIR / f"{stem}.md"
+        md_path = ARTICLES_DIR / f"{stem}.md"
         md_title = read_md_title(md_path)
         title = md_title if md_title else stem.replace("_", " ").title()
 

@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show:*)",
+      "Bash(pip install:*)",
+      "Bash(PYTHONIOENCODING=utf-8 python:*)",
+      "WebFetch(domain:www.mlb.com)",
+      "Bash(git:*)",
+      "Bash(xargs:*)",
+      "Bash(for dir in . ./docs ./docs/articles ./docs/audio ./docs/exercises ./docs/plans ./podcast ./reading_plus ./reading_plus/audio ./reading_plus/news ./reading_plus/news/audio)",
+      "Bash(do echo \"=== $dir ===\")",
+      "Read(//d/mywork/aiden-english/**)",
+      "Bash(done)"
+    ]
+  }
+}
