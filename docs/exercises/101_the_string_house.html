@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: The String House</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>The String House</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 15</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "The String House",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Sends out light (Par. 1)",
+        "options": ["sun", "string", "branch", "spider", "web"],
+        "answer": "sun"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "From one side to the other (Par. 1)",
+        "options": ["through", "bouncing", "closer", "straight", "apart"],
+        "answer": "through"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Moving up and down (Par. 2)",
+        "options": ["bouncing", "shines", "dropped", "walked", "tied"],
+        "answer": "bouncing"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Small animal that builds webs (Par. 3)",
+        "options": ["spider", "rabbit", "bee", "ant", "frog"],
+        "answer": "spider"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Homes for spiders (Par. 6)",
+        "options": ["webs", "woods", "holes", "branches", "rooms"],
+        "answer": "webs"
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["spider", "frog", "ant", "bee"],
+        "answer": ["spider", "ant", "bee"],
+        "pick": 3
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["airplane", "sun", "moon", "star"],
+        "answer": ["sun", "moon", "star"],
+        "pick": 3
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["tell", "say", "carry", "talk"],
+        "answer": ["tell", "say", "talk"],
+        "pick": 3
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the three words that belong together:",
+        "options": ["small", "long", "high", "tall"],
+        "answer": ["long", "high", "tall"],
+        "pick": 3
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "Willy sang as he worked. 'He' stands for ___.",
+        "options": ["Willy", "Uncle Bunny", "the spider's web"],
+        "answer": "Willy"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "Willy's house moved as it caught the wind. 'It' stands for ___.",
+        "options": ["the wind", "Willy's house", "the branch"],
+        "answer": "Willy's house"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "I ___ to be at school on time.",
+        "options": ["ran", "thought", "ate"],
+        "answer": "ran"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The children moved the ___ to the backyard.",
+        "options": ["street", "toys", "stairs"],
+        "answer": "toys"
+      },
+      {
+        "type": "select",
+        "section": "Reading and Thinking",
+        "prompt": "The ___ showed we were late.",
+        "options": ["flag", "chicken", "clock"],
+        "answer": "clock"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Why would Uncle Bunny have trouble in Willy Webb's house?",
+        "options": [
+          "Rabbits can't walk on strings.",
+          "The roof is too low.",
+          "There is only one bedroom."
+        ],
+        "answer": "Rabbits can't walk on strings."
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>
