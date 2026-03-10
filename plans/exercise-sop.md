@@ -1,6 +1,6 @@
-# Exercise v2 — 套用 SOP
+# Exercise SOP
 
-將 quiz-engine v2 套用到新練習頁的標準作業流程。
+建立互動練習頁的標準作業流程。適用於 Reading Plus 和 Articles 兩條 Pipeline。
 
 ## 前置條件
 
@@ -12,9 +12,7 @@
 
 ### 1. 準備題目資料
 
-從原始 plan 檔 `plans/2026-03-10-exercise-v2-plan.md` 取得該頁的題目資料（Task 3-7 對應 p.97/99/101/103）。
-
-如果 plan 中缺少某頁，需要：
+如果已有 plan 檔包含題目 JSON，直接使用。否則需要：
 1. 讀取對應的 `reading_plus/{頁碼}_*.md` 故事文本
 2. 參考課本練習圖片 `reading_plus/scans/{頁碼}.jpg`
 3. 依照下方題型規格建立 JSON 資料

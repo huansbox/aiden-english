@@ -35,13 +35,12 @@
 - 讀：可列印 HTML 頁面（大字體、段落編號、新詞粗體）
 - 練：互動練習題（Pad 瀏覽器）
 
-## 簡化標準（Pipeline 2）
+## SOP 文件
 
-- 每篇 150-200 字，平均句長 8-12 字，最長不超過 18 字
-- 80% 簡單句，過去簡單式為主
-- 新詞彙 5-8 個/篇，in-context 解釋（不另設 glossary）
-- 一篇原文可拆為多篇（各有完整故事弧線）
-- 三角度審核：閱讀難度分析 / 敘事與趣味性 / EFL 教學價值
+| SOP | 用途 | 何時載入 |
+|-----|------|---------|
+| `plans/exercise-sop.md` | 建立互動練習題 | Pipeline 1 & 2 最後一步 |
+| `plans/article-rewrite-sop.md` | 改寫文章（含基準數據、審核流程） | Pipeline 2 Step 1-3 |
 
 ## 學習流程（使用者端）
 
@@ -67,9 +66,10 @@ generate_audio.py               通用 TTS 腳本（CLI 參數選來源）
 podcast/
 └── generate_feed.py            RSS feed 生成器
 
-plans/                          設計文檔（不部署）
-├── exercise-v2-sop.md
-└── *.md
+plans/                          設計文檔與 SOP（不部署）
+├── exercise-sop.md             練習題建立 SOP
+├── article-rewrite-sop.md      文章改寫 SOP
+└── archive/                    歷史 plan（已完成）
 
 docs/                           GitHub Pages 部署目錄
 ├── index.html
@@ -97,7 +97,7 @@ docs/                           GitHub Pages 部署目錄
 python generate_audio.py reading_plus
 # 3. 更新 feed
 python podcast/generate_feed.py
-# 4. 建立練習頁（參考 plans/exercise-v2-sop.md）
+# 4. 建立練習頁（參考 plans/exercise-sop.md）
 # 5. 更新 docs/exercises/index.html
 ```
 
