@@ -41,6 +41,7 @@
 |-----|------|---------|
 | `plans/exercise-sop.md` | 建立互動練習題 | Pipeline 1 & 2 最後一步 |
 | `plans/article-rewrite-sop.md` | 改寫文章（含基準數據、審核流程） | Pipeline 2 Step 1-3 |
+| `plans/reading-plus-analysis.md` | Reading Plus 內容分析（基準數據來源） | Pipeline 2 改寫對齊參照 |
 
 ## 學習流程（使用者端）
 
