@@ -1,0 +1,263 @@
+/* ── Reset & Base ─────────────────────── */
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 20px;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  background: #f8f9fa;
+  color: #1a1a1a;
+  /* Landscape: fill viewport height */
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden; /* No scrolling — one card at a time */
+}
+
+/* ── Header ───────────────────────────── */
+.quiz-header {
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+.quiz-header h1 { font-size: 1.1rem; margin: 0; }
+.quiz-header .back { color: #7c3aed; text-decoration: none; font-size: 0.95rem; }
+.section-label {
+  font-size: 0.8rem;
+  color: #7c3aed;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+/* ── Card area (fills remaining space) ── */
+.card-area {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 2rem;
+  overflow-y: auto;
+}
+
+.card {
+  display: none; /* JS shows active card */
+  width: 100%;
+  max-width: 800px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem 2.5rem;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+}
+.card.active { display: block; }
+
+.card .prompt {
+  font-size: 1.3rem;
+  font-weight: 600;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Option buttons (single/multi select) */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+.options .opt-btn {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}
+.opt-btn:active { transform: scale(0.97); }
+.opt-btn.selected {
+  background: #f3f0ff;
+  border-color: #7c3aed;
+  color: #7c3aed;
+  font-weight: 600;
+}
+.opt-btn.correct {
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #065f46 !important;
+}
+.opt-btn.wrong {
+  background: #fef2f2 !important;
+  border-color: #ef4444 !important;
+  color: #991b1b !important;
+}
+.opt-btn.missed {
+  /* Correct answer the user didn't pick */
+  background: #ecfdf5 !important;
+  border-color: #10b981 !important;
+  color: #065f46 !important;
+  opacity: 0.7;
+}
+.opt-btn.disabled { pointer-events: none; opacity: 0.5; }
+
+/* ── Word Bank ────────────────────────── */
+.word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+}
+.word-bank .wb-word {
+  padding: 0.6rem 1.2rem;
+  font-size: 1.05rem;
+  border: 2px solid #7c3aed;
+  border-radius: 10px;
+  background: #f3f0ff;
+  color: #7c3aed;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.15s;
+}
+.wb-word.used {
+  opacity: 0.3;
+  pointer-events: none;
+  border-color: #ccc;
+  color: #999;
+  background: #f9fafb;
+}
+.wb-sentences { display: flex; flex-direction: column; gap: 0.8rem; }
+.wb-sentence {
+  font-size: 1.05rem;
+  line-height: 1.6;
+}
+.wb-slot {
+  display: inline-block;
+  min-width: 100px;
+  padding: 0.3rem 0.8rem;
+  border-bottom: 2px solid #7c3aed;
+  text-align: center;
+  cursor: pointer;
+  font-weight: 600;
+  color: #7c3aed;
+  transition: background 0.15s;
+  border-radius: 4px;
+}
+.wb-slot:empty { color: transparent; }
+.wb-slot:empty::after { content: "___"; color: #ccc; font-weight: 400; }
+.wb-slot.correct { background: #ecfdf5; border-color: #10b981; color: #065f46; }
+.wb-slot.wrong { background: #fef2f2; border-color: #ef4444; color: #991b1b; }
+
+/* ── Order (click-to-sort) ────────────── */
+.order-pool, .order-sorted {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  min-height: 3rem;
+}
+.order-sorted { margin-top: 1rem; border-top: 2px dashed #e5e7eb; padding-top: 1rem; }
+.order-item {
+  padding: 0.7rem 1.2rem;
+  font-size: 1rem;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.order-item:active { transform: scale(0.98); }
+.order-sorted .order-item {
+  border-color: #7c3aed;
+  background: #f3f0ff;
+}
+.order-sorted .order-item::before {
+  font-weight: 700;
+  color: #7c3aed;
+  margin-right: 0.5rem;
+}
+.order-sorted .order-item:nth-child(1)::before { content: "\2460 "; }
+.order-sorted .order-item:nth-child(2)::before { content: "\2461 "; }
+.order-sorted .order-item:nth-child(3)::before { content: "\2462 "; }
+.order-sorted .order-item:nth-child(4)::before { content: "\2463 "; }
+.order-item.correct { background: #ecfdf5 !important; border-color: #10b981 !important; }
+.order-item.wrong { background: #fef2f2 !important; border-color: #ef4444 !important; }
+
+/* ── Feedback overlay ─────────────────── */
+.feedback {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.15);
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+.feedback.show { display: flex; }
+.feedback-inner {
+  background: #fff;
+  border-radius: 20px;
+  padding: 2rem 3rem;
+  text-align: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+}
+.feedback-inner.is-correct { color: #059669; }
+.feedback-inner.is-wrong { color: #dc2626; }
+
+/* ── Nav bar ──────────────────────────── */
+.nav-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.8rem 1.5rem;
+  background: #fff;
+  border-top: 1px solid #e5e7eb;
+  flex-shrink: 0;
+}
+.nav-bar button {
+  padding: 0.7rem 1.8rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.nav-bar .btn-prev { background: #e5e7eb; color: #374151; }
+.nav-bar .btn-next { background: #7c3aed; color: #fff; }
+.nav-bar .btn-prev:disabled,
+.nav-bar .btn-next:disabled { opacity: 0.3; pointer-events: none; }
+.nav-bar .progress { font-size: 1rem; color: #6b7280; font-weight: 600; }
+
+/* ── Summary card ─────────────────────── */
+.summary { text-align: center; }
+.summary .score-big {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #7c3aed;
+  margin: 1rem 0;
+}
+.summary .btn-restart {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+  background: #7c3aed;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* ── Responsive: portrait fallback ────── */
+@media (max-width: 768px) {
+  body { font-size: 17px; }
+  .card { padding: 1.5rem; }
+  .card .prompt { font-size: 1.15rem; }
+  .card-area { padding: 0.8rem 1rem; }
+}
