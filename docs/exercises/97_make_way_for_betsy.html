@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exercise: Make Way for Betsy</title>
+  <link rel="stylesheet" href="style-v2.css">
+</head>
+<body>
+  <div class="quiz-header">
+    <a class="back" href="index.html">&larr; Back</a>
+    <h1>Make Way for Betsy</h1>
+  </div>
+
+  <div class="card-area"></div>
+
+  <div class="feedback"><div class="feedback-inner"></div></div>
+
+  <div class="nav-bar">
+    <button class="btn-prev" disabled>&larr; Prev</button>
+    <span class="progress">1 / 14</span>
+    <button class="btn-next">Next &rarr;</button>
+  </div>
+
+  <script id="quiz-data" type="application/json">
+  {
+    "title": "Make Way for Betsy",
+    "questions": [
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "A place to walk (Par. 1)",
+        "options": ["path", "stream", "branch", "hole", "ground"],
+        "answer": "path"
+      },
+      {
+        "type": "vocab",
+        "section": "Knowing the Words",
+        "prompt": "Insect bite (Par. 4)",
+        "options": ["sting", "buzzing", "fur", "paw", "honey"],
+        "answer": "sting"
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the two antonyms:",
+        "options": ["inside", "little", "claws", "outside"],
+        "answer": ["inside", "outside"],
+        "pick": 2
+      },
+      {
+        "type": "synonym",
+        "section": "Knowing the Words",
+        "prompt": "Pick the two antonyms:",
+        "options": ["long", "push", "hungry", "pull"],
+        "answer": ["push", "pull"],
+        "pick": 2
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "___ burning nose",
+        "options": ["Uncle Bunny's", "Betsy Bear's"],
+        "answer": "Betsy Bear's"
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "___ whiskers",
+        "options": ["Uncle Bunny's", "Betsy Bear's"],
+        "answer": "Uncle Bunny's"
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "Please ___ your book with you.",
+        "options": ["bring", "string", "spring"],
+        "answer": "bring"
+      },
+      {
+        "type": "select",
+        "section": "Working with Words",
+        "prompt": "The clothes are ___.",
+        "options": ["clean", "cream", "string"],
+        "answer": "clean"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Where did Betsy's path go?",
+        "options": [
+          "From a tall tree down to the stream",
+          "From the meadow to her cave",
+          "From the carrot patch to the woods"
+        ],
+        "answer": "From a tall tree down to the stream"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "What did Betsy find inside the tree?",
+        "options": [
+          "A bird's nest",
+          "Some honey",
+          "Uncle Bunny's cane"
+        ],
+        "answer": "Some honey"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "The bees were angry because ___.",
+        "options": [
+          "Uncle Bunny scared them",
+          "Betsy was taking their honey",
+          "The wind blew their tree"
+        ],
+        "answer": "Betsy was taking their honey"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Bears and bees eat honey.",
+        "options": ["True", "False"],
+        "answer": "True"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Bears and bees make honey.",
+        "options": ["True", "False"],
+        "answer": "False"
+      },
+      {
+        "type": "radio",
+        "section": "Reading and Thinking",
+        "prompt": "Bees are larger than bears.",
+        "options": ["True", "False"],
+        "answer": "False"
+      }
+    ]
+  }
+  </script>
+  <script src="quiz-engine.js"></script>
+</body>
+</html>
